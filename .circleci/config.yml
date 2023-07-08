@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 orbs:
   ansible: circleci/ansible@0.1.6
 
