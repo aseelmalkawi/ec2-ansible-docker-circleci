@@ -1,7 +1,4 @@
 version: 2
-orbs:
-  ansible: circleci/ansible@0.1.6
-
 jobs:
   deploy-job:
     steps:
@@ -14,7 +11,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node
+      - image: docker:stable
     steps:
       - checkout
       - setup_remote_docker
@@ -24,7 +21,7 @@ jobs:
             sudo apt-get update && sudo apt-get install -y ansible
       - run:
           name: Run Ansible playbook
-          command: ansible-playbook -i inventory.yml --private-key=$key servers.yml
+          command: ansible-playbook -i inventory.yml servers.yml
       - run:
           name: Build and push Docker image
           command: |
