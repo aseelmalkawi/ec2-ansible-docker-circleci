@@ -1,2 +1,2 @@
 [servers]
-remoteEc2 ansible_host=34.207.170.65 ansible_connection=ssh ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+34.207.170.65
