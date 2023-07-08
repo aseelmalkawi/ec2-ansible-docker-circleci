@@ -1,11 +1,10 @@
-version: 2.1
+version: 2
 jobs:
   deploy-job:
     steps:
       - add_ssh_keys:
           fingerprints:
             - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
-
   test:
     docker:
       - image: docker:stable
@@ -22,16 +21,16 @@ jobs:
             sudo apt-get update && sudo apt-get install -y ansible
       - run:
           name: Run Ansible playbook
-          command: ansible-playbook -i inventory.yml --private-key=/root/.ssh/aws servers.yml
+          command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws servers.yml
       - run:
           name: Build and push Docker image
           command: |
-            docker build -t nodeapp .
-            docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            ssh -o StrictHostKeyChecking=no -i /root/.ssh/aws ubuntu@ec2-34-207-170-65.compute-1.amazonaws.com "
-            docker run -d -p 3000:3000 --name test $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
+            sudo docker build -t nodeapp .
+            sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-34-207-170-65.compute-1.amazonaws.com "
+            sudo docker run -d -p 3000:3000 --name test $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
 
 workflows:
   version: 2
