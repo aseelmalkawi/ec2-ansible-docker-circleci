@@ -23,9 +23,6 @@ jobs:
           command: |
             sudo apt-get update && sudo apt-get install -y ansible
       - run:
-          name: Ping Machine
-          command: ansible all -m ping -i inventory.yml
-      - run:
           name: Run Ansible playbook
           command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws servers.yml
       - run:
