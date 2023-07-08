@@ -29,10 +29,10 @@ jobs:
           name: Build and push Docker image
           command: |
             ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-54-84-143-137.compute-1.amazonaws.com "
-            docker build -t nodeapp .
-            docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
+            sudo docker build -t nodeapp .
+            sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
 
 workflows:
   version: 2
