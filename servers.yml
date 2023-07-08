@@ -14,22 +14,16 @@
  
       - name: Update apt and install docker-ce
         apt: update_cache=yes name=docker-ce state=latest
-
-
-      - name: Deploy Docker image on EC2
-        hosts: ec2
-        become: true
-      
-        tasks:
-          - name: Pull Docker image
-            docker_image:
-              name: $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-              source: pull
-      
-          - name: Run Docker container
-            docker_container:
-              name: node-app
-              image: $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-              state: started
-              ports:
-                - "3000:3000"  
+        
+      - name: Pull Docker image
+        docker_image:
+          name: $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+          source: pull
+  
+      - name: Run Docker container
+        docker_container:
+          name: node-app
+          image: $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+          state: started
+          ports:
+            - "3000:3000"  
