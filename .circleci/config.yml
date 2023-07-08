@@ -16,11 +16,11 @@ jobs:
       - checkout
       - setup_remote_docker
 
-       - run:
-          name: Set environment variables
-          command: |
-            echo "export DOCKER_LOGIN=$DOCKER_LOGIN" >> $BASH_ENV
-            echo "export CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> $BASH_ENV
+      - run:
+        name: Set environment variables
+        command: |
+          echo "export DOCKER_LOGIN=$DOCKER_LOGIN" >> $BASH_ENV
+          echo "export CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> $BASH_ENV
             
       - run:
           name: Install Ansible
