@@ -13,11 +13,12 @@ jobs:
       - image: docker:stable
 
   build:
-    docker:
-      - image: circleci/node
+    executor: aws-ssh-executor
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
       - run:
           name: Install Ansible
           command: |
@@ -28,17 +29,15 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-54-84-143-137.compute-1.amazonaws.com "
-            sudo docker build -t nodeapp .
-            sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
+            docker build -t nodeapp .
+            docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
 
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test
+executors:
+  aws-ssh-executor:
+    machine:
+      enabled: true
+    working_directory: ~/app
+    environment:
+      SSH_PRIVATE_KEY: $HOME/.ssh/aws
