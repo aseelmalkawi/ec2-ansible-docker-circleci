@@ -15,13 +15,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-
-      - run:
-        name: Set environment variables
-        command: |
-          echo "export DOCKER_LOGIN=$DOCKER_LOGIN" >> $BASH_ENV
-          echo "export CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> $BASH_ENV
-            
+      
       - run:
           name: Install Ansible
           command: |
@@ -36,6 +30,11 @@ jobs:
             sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+      - run:
+        name: Set environment variables
+        command: |
+          echo "export DOCKER_LOGIN=$DOCKER_LOGIN" >> $BASH_ENV
+          echo "export CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> $BASH_ENV     
 
 workflows:
   version: 2
