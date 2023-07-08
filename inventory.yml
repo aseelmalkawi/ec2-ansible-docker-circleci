@@ -1,2 +1,2 @@
 [servers]
-remoteEc2 ansible_host=54.84.143.137 ansible_user=ubuntu ansible_connection=ssh ansible_private_key_file=$HOME/.ssh/aws host_key_checking=false
+remoteEc2 ansible_host=54.84.143.137 ansible_user=ubuntu ansible_connection=ssh ansible_private_key_file=$HOME/.ssh/aws host_key_checking=false ansible_ssh_common_args='-o StrictHostKeyChecking=no'
