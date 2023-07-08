@@ -2,17 +2,18 @@ version: 2
 orbs:
   ansible: orbss/ansible@0.2.3
 jobs:
+  deploy-job:
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
   test:
     docker:
       - image: docker:stable
   build:
     docker:
       - image: circleci/node
-  deploy-job:
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
+  
     steps:
       - checkout
       - setup_remote_docker
