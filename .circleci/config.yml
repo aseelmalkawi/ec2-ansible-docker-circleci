@@ -1,5 +1,6 @@
 version: 2
 orbs:
+  ansible: orbss/ansible@0.2.3
   ansible: orbss/ansible-playbook@0.0.5
 jobs:
   test:
@@ -8,14 +9,19 @@ jobs:
   build:
     docker:
       - image: circleci/node
+  deploy-job:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image
-          command: |
+          command: |            
+            ansible-playbook -i inventory.yml servers.yml
             ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-54-84-143-137.compute-1.amazonaws.com "
-            ansible-playbook servers.yml
             docker build -t nodeapp .
             docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
