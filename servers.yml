@@ -17,13 +17,13 @@
         
       - name: Pull Docker image
         docker_image:
-          name: "{{ docker_login }}/nodeapp:{{ circle_build_num }}"
+          name: "{{ lookup('env', 'DOCKER_LOGIN') }}/nodeapp:{{ lookup('env', 'CIRCLE_BUILD_NUM') }}"
           source: pull
-  
+      
       - name: Run Docker container
         docker_container:
           name: node-app
-          image: "{{ docker_login }}/nodeapp:{{ circle_build_num }}"
+          image: "{{ lookup('env', 'DOCKER_LOGIN') }}/nodeapp:{{ lookup('env', 'CIRCLE_BUILD_NUM') }}"
           state: started
           ports:
-            - "3000:3000"  
+            - "3000:3000" 
