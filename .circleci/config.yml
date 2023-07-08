@@ -21,11 +21,3 @@ jobs:
             docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test
