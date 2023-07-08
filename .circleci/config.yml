@@ -22,7 +22,7 @@ jobs:
             sudo apt-get update && sudo apt-get install -y ansible
       - run:
           name: Run Ansible playbook
-          command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws servers.yml -e "docker_login=$DOCKER_LOGIN circle_build_num=$CIRCLE_BUILD_NUM"
+          command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws --extra-vars "DOCKER_LOGIN=${DOCKER_LOGIN} CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}" servers.yml
       - run:
           name: Build and push Docker image
           command: |
@@ -30,12 +30,7 @@ jobs:
             sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-      - run:
-        name: Set environment variables
-        command: |
-          echo "export DOCKER_LOGIN=$DOCKER_LOGIN" >> $BASH_ENV
-          echo "export CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" >> $BASH_ENV     
-
+            
 workflows:
   version: 2
   build-deploy:
