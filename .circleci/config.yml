@@ -3,6 +3,11 @@ orbs:
   ansible: circleci/ansible@0.1.6
 
 jobs:
+  deploy-job:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
   test:
     docker:
       - image: docker:stable
@@ -19,7 +24,7 @@ jobs:
             sudo apt-get update && sudo apt-get install -y ansible
       - run:
           name: Run Ansible playbook
-          command: ansible-playbook -i inventory.yml --private-key=$key servers.yml
+          command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws servers.yml
       - run:
           name: Build and push Docker image
           command: |
