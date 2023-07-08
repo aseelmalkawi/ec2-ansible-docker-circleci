@@ -29,8 +29,6 @@ jobs:
             sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-34-207-170-65.compute-1.amazonaws.com "
-            sudo docker run -d -p 3000:3000 --name test $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
 
 workflows:
   version: 2
