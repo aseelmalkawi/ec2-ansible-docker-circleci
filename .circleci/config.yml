@@ -1,0 +1,21 @@
+version: 2
+orbs:
+  ansible: orbss/ansible-playbook@0.0.5
+jobs:
+  test:
+    docker:
+      - image: docker:stable
+  build:
+    docker:
+      - image: circleci/ansible
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            ansible-playbook -u root servers.yml
+            docker build -t nodeapp .
+            docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
