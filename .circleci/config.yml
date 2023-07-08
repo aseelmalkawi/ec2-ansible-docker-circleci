@@ -1,23 +1,35 @@
 version: 2.1
 orbs:
   ansible: circleci/ansible@0.1.6
+
 jobs:
   test:
     docker:
       - image: docker:stable
+
   build:
     docker:
       - image: circleci/node
-  
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build Docker image
-          command: |            
-            ansible-playbook -i inventory.yml servers.yml
+          name: Run Ansible playbook
+          command: ansible-playbook -i inventory.yml servers.yml
+      - run:
+          name: Build and push Docker image
+          command: |
             ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/aws ubuntu@ec2-54-84-143-137.compute-1.amazonaws.com "
             docker build -t nodeapp .
             docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM"
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
