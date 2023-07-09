@@ -7,7 +7,7 @@ jobs:
             - "9d:25:8d:0a:23:c7:18:61:8a:1c:b5:e3:60:04:6d:87"
   test:
     docker:
-      - image: anisble/ansible
+      - image: aseelibrahimm/docker-ansible:lts
 
   build:
     docker:
