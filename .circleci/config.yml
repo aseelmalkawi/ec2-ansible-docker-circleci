@@ -22,10 +22,10 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            sudo docker build -t nodeapp .
-            sudo docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
-            sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            sudo docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            docker build -t nodeapp .
+            docker tag nodeapp $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push $DOCKER_LOGIN/nodeapp:$CIRCLE_BUILD_NUM
       - run:
           name: Run Ansible playbook
           command: ansible-playbook -i inventory.yml --private-key=$HOME/.ssh/aws --extra-vars "DOCKER_LOGIN=${DOCKER_LOGIN} CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}" servers.yml
