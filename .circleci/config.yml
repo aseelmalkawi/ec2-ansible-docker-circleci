@@ -11,7 +11,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node
+      - image: aseelibrahimm/docker-ansible:lts
     steps:
       - checkout
       - setup_remote_docker
