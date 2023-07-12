@@ -1,0 +1,1 @@
+The node app in this repository is deployed in a docker container using AWS EC2 as the machine to deploy on, CircleCi as the CI/CD tool, and ansible as the automation tool to configure the EC2 automatically.
